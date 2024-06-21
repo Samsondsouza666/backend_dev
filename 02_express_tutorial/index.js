@@ -1,7 +1,6 @@
+import 'dotenv/config'
 import express from 'express'
-
-
-const port = 3000
+const port = process.env.PORT || 3000
 const  app = express()
 
 
@@ -68,6 +67,8 @@ app.delete("/:id",(req,res)=>{
     
 })
 
+// let a = 10**10
+// console.log(a)
 app.listen(port,()=>{
     console.log("listenning ........")
 })
