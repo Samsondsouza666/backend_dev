@@ -2,11 +2,15 @@ import 'dotenv/config'
 import logger from './logger.js';
 import morgan from 'morgan';
 import express from 'express'
+
+import cors from 'cors'
 const port = process.env.PORT || 3000
 const  app = express()
 
 const morganFormat = ':method :url :status :response-time ms';
 
+
+app.use(cors())
 
 app.use(express.json())
 
@@ -27,7 +31,7 @@ app.use(morgan(morganFormat, {
   }));
 const tea = []
 let nextId =1;
-app.post("/tea",(req,res)=>{
+app.post("/api/tea",(req,res)=>{
     // console.log(req.body)
     const temp = req.body
     
@@ -40,15 +44,15 @@ app.post("/tea",(req,res)=>{
  
     res.send("data stored successfully")
 })
-app.get("/",(req,res)=>{
+app.get("/api/",(req,res)=>{
     send("hello worllddd!!!")
 })
-app.get("/getTeas",(req,res)=>{
+app.get("/api/getTeas",(req,res)=>{
     
     res.status(201).send(tea)
 })
 
-app.get("/:id",(req,res)=>{
+app.get("/api/:id",(req,res)=>{
     
     const queryId = req.params.id
     // console.log(queryId)
@@ -60,7 +64,7 @@ app.get("/:id",(req,res)=>{
     if(!flag) res.status(404).send("query data is not present")
 })
 
-app.put("/:id",(req,res)=>{
+app.put("/api/:id",(req,res)=>{
     const queryId = parseInt(req.params.id)
     let flag = 0
     tea.forEach((element,index) =>{
@@ -73,7 +77,7 @@ app.put("/:id",(req,res)=>{
     
 })
 
-app.delete("/:id",(req,res)=>{
+app.delete("/api/:id",(req,res)=>{
     const queryId = parseInt(req.params.id)
     let flag = 0
     tea.forEach((element,index) =>{
@@ -89,5 +93,5 @@ app.delete("/:id",(req,res)=>{
 // let a = 10**10
 // console.log(a)
 app.listen(port,()=>{
-    console.log("listenning ........")
+    console.log("listenning ........",`http://localhost:${port}`)
 })
