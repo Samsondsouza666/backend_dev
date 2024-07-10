@@ -21,6 +21,10 @@ connectDB()
 })
 
 
+
+
+
+
 // import { upload } from "./   middlewares/multer.middleware.js"
 
 // upload.single('avatar')
