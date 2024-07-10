@@ -6,7 +6,8 @@ class ApiError extends Error{
         stack= ""
     )
     {
-        this.super(message)
+        // console.log(this)
+        super(message)
         this.data =null
         this.statusCode = statusCode
         this.message =message

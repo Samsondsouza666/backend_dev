@@ -1,1 +1,1 @@
-export const DB_NAME = "ComapnyDBss"
+export const DB_NAME = "video_Streaming"
