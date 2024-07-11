@@ -22,7 +22,7 @@ const generateAccessTokenAndRefreshToken = async (userId)=>
     }
     catch(error)
     {
-        throw new ApiError(500,"something went wrong while generating accesstoken and refreshtoken")
+        throw new ApiError(500,error?.message || "something went wrong while generating accesstoken and refreshtoken")
     }
 
 }
@@ -144,13 +144,14 @@ const loginUser = asyncHandler(async(req,res)=>{
     const {accessToken,refreshToken} = await generateAccessTokenAndRefreshToken(user._id)
 
 
-    const loggedInUser = await user.findById(user._id).select("-password -refreshToken")
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
     
-    const option = {
+    const options = {
         httpOnly:true,
         secure:true
     }
-
+    // for(let i =0;i<=100000000;i++)
+    //     continue
     return res
     .status(200)
     .cookie("accessToken", accessToken,options)
@@ -164,7 +165,31 @@ const loginUser = asyncHandler(async(req,res)=>{
     )
 })
 
+const logoutUser = asyncHandler(async(req,res)=>{
+
+    const user = req.user
+
+    await User.findByIdAndUpdate(user._id,{
+        $set: {
+            refreshToken:undefined
+        }
+    },
+{
+    new:true
+})
+    const options = {
+        httpOnly:true,
+        secure:true
+    }
+    res.status(200)
+    .clearCookie("accessToken")
+    .clearCookie("refreshToken")
+    .json(
+        new ApiResponse(200,{},"user loggout successfully")
+    )
+})
 
 
 
-export {registerUser,loginUser}
+
+export {registerUser,loginUser,logoutUser}
